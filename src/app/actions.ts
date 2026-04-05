@@ -2,9 +2,14 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { DEFAULT_PROGRESS, clone, type Progress } from '@/components/circle-sum-challenge/config'
+import { SUPABASE_CONFIG_ERROR } from '@/utils/supabase/config'
 
 export async function saveProgress(progress: Progress) {
   const supabase = await createClient()
+  if (!supabase) {
+    return { success: false, error: SUPABASE_CONFIG_ERROR }
+  }
+
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) return { success: false, error: 'Not authenticated' }
@@ -23,6 +28,10 @@ export async function saveProgress(progress: Progress) {
 
 export async function loadProgress(): Promise<Progress | null> {
   const supabase = await createClient()
+  if (!supabase) {
+    return null
+  }
+
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) return null

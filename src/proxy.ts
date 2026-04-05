@@ -1,14 +1,22 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { getSupabaseEnv } from '@/utils/supabase/config'
 
 export async function proxy(request: NextRequest) {
+  const supabaseEnv = getSupabaseEnv()
+  if (!supabaseEnv) {
+    return NextResponse.next({
+      request,
+    })
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   })
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseEnv.url,
+    supabaseEnv.anonKey,
     {
       cookies: {
         getAll() {
@@ -30,7 +38,11 @@ export async function proxy(request: NextRequest) {
   )
 
   // Refreshing the auth token
-  await supabase.auth.getUser()
+  try {
+    await supabase.auth.getUser()
+  } catch (error) {
+    console.warn('Skipping auth refresh in proxy.', error)
+  }
 
   return supabaseResponse
 }

@@ -1,10 +1,13 @@
 import { login, signup } from './actions'
+import { isSupabaseConfigured, SUPABASE_CONFIG_ERROR } from '@/utils/supabase/config'
 
 export default async function LoginPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const searchParams = await props.searchParams
-  const error = searchParams?.error as string | undefined
+  const configured = isSupabaseConfigured()
+  const searchError = searchParams?.error as string | undefined
+  const error = searchError ?? (configured ? undefined : SUPABASE_CONFIG_ERROR)
 
   return (
     <div className="flex h-screen w-full items-center justify-center p-4">
@@ -42,12 +45,14 @@ export default async function LoginPage(props: {
         <div className="flex gap-4 mt-4">
           <button 
             formAction={login} 
+            disabled={!configured}
             className="flex-1 py-2 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors"
           >
             Log in
           </button>
           <button 
             formAction={signup} 
+            disabled={!configured}
             className="flex-1 py-2 px-4 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium transition-colors"
           >
             Sign up
