@@ -469,7 +469,7 @@ export const clamp = (value: number, min: number, max: number) =>
 export const randomBetween = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
-export const pickRandom = <T,>(items: T[]) =>
+export const pickRandom = <T,>(items: readonly T[]) =>
   items[Math.floor(Math.random() * items.length)];
 
 export const capitalize = (value: string) =>
