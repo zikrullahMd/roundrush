@@ -1,26 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+  --font-circle-display: "Avenir Next Condensed", "Gill Sans Nova Condensed",
+    "Arial Narrow Bold", "Trebuchet MS", sans-serif;
+  --font-circle-body: "Avenir Next", "Avenir", "Trebuchet MS", "Segoe UI",
+    sans-serif;
+  --font-circle-mono: "SFMono-Regular", "Roboto Mono", "Consolas", monospace;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-circle-body);
+  --font-mono: var(--font-circle-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  margin: 0;
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #050816;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
